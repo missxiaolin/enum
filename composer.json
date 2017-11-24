@@ -14,7 +14,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "xinlin\\": "src/"
+            "xiaolin\\": "src"
         }
     },
     "autoload-dev": {
