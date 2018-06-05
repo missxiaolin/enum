@@ -42,17 +42,21 @@ abstract class Enum
      * @param $method
      * @param $arguments
      * @return mixed
+     * @throws EnumException
+     * @throws \ReflectionException
      */
     public static function __callStatic($method, $arguments)
     {
         return static::getInstance()->$method(...$arguments);
     }
 
+
     /**
      * @param $name
      * @param $arguments
      * @return string
      * @throws EnumException
+     * @throws \ReflectionException
      */
     public function __call($name, $arguments)
     {
