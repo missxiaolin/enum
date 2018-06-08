@@ -9,7 +9,7 @@
 namespace xiaolin\Enum\Annotation;
 
 use Phalcon\Text;
-use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
+use ReflectionProperty;
 
 class PhalconAdapter implements AdapterInterface
 {
@@ -27,19 +27,33 @@ class PhalconAdapter implements AdapterInterface
      */
     public function getAnnotationsByName($name, $properties)
     {
-        $adapter = new MemoryAdapter();
-        $reflection = $adapter->get($this->class);
-        $annotations = $reflection->getPropertiesAnnotations();
-
-        $arr = [];
+        $result = [];
         foreach ($properties as $key => $val) {
-            if (Text::startsWith($key, 'ENUM_') && isset($annotations[$key])) {
+            if (Text::startsWith($key, 'ENUM_')) {
                 // 获取对应注释
-                $ret = $annotations[$key]->get(Text::camelize($name));
-                $arr[$val] = $ret->getArgument(0);
+                $ret = new ReflectionProperty($this->class, $key);
+                $result[$val] = $this->getCommentByName($ret->getDocComment(), $name);
             }
         }
 
-        return $arr;
+        return $result;
+    }
+
+    /**
+     * @desc   根据name解析doc获取对应注释
+     * @author limx
+     * @param $doc  注释
+     * @param $name 字段名
+     */
+    protected function getCommentByName($doc, $name)
+    {
+        $name = Text::camelize($name);
+        $pattern = "/\@{$name}\(\'(.*)\'\)/U";
+        if (preg_match($pattern, $doc, $result)) {
+            if (isset($result[1])) {
+                return $result[1];
+            }
+        }
+        return null;
     }
 }

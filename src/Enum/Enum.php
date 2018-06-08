@@ -10,7 +10,6 @@ namespace xiaolin\Enum;
 // +----------------------------------------------------------------------
 
 use Phalcon\Text;
-use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
 use ReflectionClass;
 use xiaolin\Enum\Annotation\AdapterInterface;
 use xiaolin\Enum\Annotation\PhalconAdapter;

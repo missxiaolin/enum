@@ -13,6 +13,7 @@ namespace Tests\Str;
 use PHPUnit\Framework\TestCase;
 use Tests\App\ErrorCode;
 use Tests\App\ErrorCode2;
+use Tests\App\ErrorCodeNoPhalcon;
 
 class BaseTest extends TestCase
 {
@@ -40,5 +41,17 @@ class BaseTest extends TestCase
         $this->assertEquals('非法的TOKEN', $msg2);
         $this->assertEquals('非法的TOKEN 2', $msg1);
 
+    }
+
+    public function testNoPhalconExt()
+    {
+        $code = ErrorCode::$ENUM_INVALID_TOKEN;
+        $res = ErrorCodeNoPhalcon::getMessage($code);
+        $res2 = ErrorCode::getMessage($code);
+        $this->assertEquals($res, $res2);
+
+        $res = ErrorCodeNoPhalcon::getDesc($code);
+        $res2 = ErrorCode::getDesc($code);
+        $this->assertEquals($res, $res2);
     }
 }

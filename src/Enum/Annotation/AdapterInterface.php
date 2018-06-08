@@ -10,5 +10,7 @@ namespace xiaolin\Enum\Annotation;
 
 interface AdapterInterface
 {
+    public function __construct($class);
+
     public function getAnnotationsByName($name, $properties);
 }
