@@ -11,6 +11,9 @@ namespace xiaolin\Enum;
 use Phalcon\Text;
 use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
 use ReflectionClass;
+use xiaolin\Enum\Annotation\AdapterInterface;
+use xiaolin\Enum\Annotation\PhalconAdapter;
+use xiaolin\Enum\Annotation\ReflectionAdapter;
 use xiaolin\Enum\Common\InstanceTrait;
 use xiaolin\Enum\Exception\EnumException;
 
@@ -20,20 +23,18 @@ abstract class Enum
 
     public static $_instance;
 
-    public $_adapter = 'memory';
-
-    public $_expire = 3600;
-
-    protected $_annotation;
+    /** @var AdapterInterface */
+    public $_adapter;
 
     protected $phalconExtEnable = true;
 
-    /**
-     * Enum constructor.
-     */
-    public function __construct()
+    private function __construct()
     {
-        $this->_annotation = new Annotation($this->phalconExtEnable);
+        if ($this->phalconExtEnable && extension_loaded('phalcon')) {
+            $this->_adapter = new PhalconAdapter(static::class);
+        } else {
+            $this->_adapter = new ReflectionAdapter(static::class);
+        }
     }
 
     /**
@@ -58,6 +59,8 @@ abstract class Enum
      */
     public function __call($name, $arguments)
     {
+        $arr = [];
+
         if (!Text::startsWith($name, 'get')) {
             throw new EnumException('The function is not defined!');
         }
@@ -72,22 +75,10 @@ abstract class Enum
             return isset($this->$name[$code]) ? $this->$name[$code] : '';
         }
 
-        // 获取注释
-        $adapter = new MemoryAdapter();
-        $reflection = $adapter->get(static::class);
-        $annotations = $reflection->getPropertiesAnnotations();
-
         // 获取变量
         $ref = new ReflectionClass(static::class);
         $properties = $ref->getDefaultProperties();
-        $arr = [];
-        foreach ($properties as $key => $val) {
-            if (Text::startsWith($key, 'ENUM_') && isset($annotations[$key])) {
-                // 获取对应注释
-                $ret = $annotations[$key]->get(Text::camelize($name));
-                $arr[$val] = $ret->getArgument(0);
-            }
-        }
+        $arr = $this->_adapter->getAnnotationsByName($name, $properties);
 
         if (version_compare(PHP_VERSION, 7, '<')) {
             // 版本小于7
