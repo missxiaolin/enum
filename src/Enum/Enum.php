@@ -21,9 +21,16 @@ abstract class Enum
 
     public $_expire = 3600;
 
+    protected $_annotation;
+
+    protected $phalconExtEnable = true;
+
+    /**
+     * Enum constructor.
+     */
     public function __construct()
     {
-
+        $this->_annotation = new Annotation($this->phalconExtEnable);
     }
 
     /**
