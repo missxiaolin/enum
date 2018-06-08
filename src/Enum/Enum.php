@@ -11,10 +11,13 @@ namespace xiaolin\Enum;
 use Phalcon\Text;
 use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
 use ReflectionClass;
+use xiaolin\Enum\Common\InstanceTrait;
 use xiaolin\Enum\Exception\EnumException;
 
 abstract class Enum
 {
+    use InstanceTrait;
+
     public static $_instance;
 
     public $_adapter = 'memory';
@@ -31,18 +34,6 @@ abstract class Enum
     public function __construct()
     {
         $this->_annotation = new Annotation($this->phalconExtEnable);
-    }
-
-    /**
-     * @return static
-     */
-    public static function getInstance()
-    {
-        if (isset(static::$_instance) && static::$_instance instanceof Enum) {
-            return static::$_instance;
-        }
-
-        return static::$_instance = new static();
     }
 
     /**

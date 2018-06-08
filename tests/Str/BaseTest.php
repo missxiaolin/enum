@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Str;
 // +----------------------------------------------------------------------
 // | BaseTest.php [ WE CAN DO IT JUST THINK IT ]
@@ -11,6 +12,7 @@ namespace Tests\Str;
 
 use PHPUnit\Framework\TestCase;
 use Tests\App\ErrorCode;
+use Tests\App\ErrorCode2;
 
 class BaseTest extends TestCase
 {
@@ -27,5 +29,16 @@ class BaseTest extends TestCase
     public function testDesc()
     {
         $this->assertEquals('需要重新登录', ErrorCode::getDesc(ErrorCode::$ENUM_INVALID_TOKEN));
+    }
+
+    public function testTwoEnum()
+    {
+        $code = ErrorCode::$ENUM_INVALID_TOKEN;
+        $msg1 = ErrorCode2::getMessage($code);
+        $msg2 = ErrorCode::getMessage($code);
+
+        $this->assertEquals('非法的TOKEN', $msg2);
+        $this->assertEquals('非法的TOKEN 2', $msg1);
+
     }
 }
