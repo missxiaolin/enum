@@ -1,4 +1,5 @@
 <?php
+
 namespace xiaolin\Enum;
 // +----------------------------------------------------------------------
 // | EnumException.php [ WE CAN DO IT JUST THINK IT ]

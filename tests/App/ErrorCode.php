@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\App;
 // +----------------------------------------------------------------------
 // | ErrorCode.php [ WE CAN DO IT JUST THINK IT ]
