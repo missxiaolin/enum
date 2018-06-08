@@ -9,12 +9,12 @@ namespace xiaolin\Enum;
 // | Author: limx <462441355@qq.com> <https://github.com/missxiaolin>
 // +----------------------------------------------------------------------
 
-use Phalcon\Text;
 use ReflectionClass;
 use xiaolin\Enum\Annotation\AdapterInterface;
 use xiaolin\Enum\Annotation\PhalconAdapter;
 use xiaolin\Enum\Annotation\ReflectionAdapter;
 use xiaolin\Enum\Common\InstanceTrait;
+use xiaolin\Enum\Common\Str;
 use xiaolin\Enum\Exception\EnumException;
 
 abstract class Enum
@@ -61,7 +61,7 @@ abstract class Enum
     {
         $arr = [];
 
-        if (!Text::startsWith($name, 'get')) {
+        if (!Str::startsWith($name, 'get')) {
             throw new EnumException('The function is not defined!');
         }
         if (!isset($arguments) || count($arguments) === 0) {

@@ -24,6 +24,7 @@ class PhalconAdapter implements AdapterInterface
      * @param $name
      * @param $properties
      * @return array
+     * @throws \ReflectionException
      */
     public function getAnnotationsByName($name, $properties)
     {
@@ -40,10 +41,10 @@ class PhalconAdapter implements AdapterInterface
     }
 
     /**
-     * @desc   根据name解析doc获取对应注释
-     * @author limx
-     * @param $doc  注释
-     * @param $name 字段名
+     * 根据name解析doc获取对应注释
+     * @param $doc
+     * @param $name
+     * @return null
      */
     protected function getCommentByName($doc, $name)
     {
