@@ -57,4 +57,16 @@ class BaseTest extends TestCase
         $res3 = ErrorCodeNoPhalcon::getMsg($code);
         $this->assertEquals('', $res3);
     }
+
+    /**
+     * @throws \ReflectionException
+     * @throws \xiaolin\Enum\Exception\EnumException
+     */
+    public function testString()
+    {
+        $code = ErrorCode::$ENUM_INVALID_STR;
+        $this->assertEquals('STR701', $code);
+        $res = ErrorCode::getMessage($code);
+        $this->assertEquals('字符串测试', $res);
+    }
 }

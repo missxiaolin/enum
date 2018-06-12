@@ -18,4 +18,9 @@ class ErrorCode extends Enum
      * @Desc('需要重新登录')
      */
     public static $ENUM_INVALID_TOKEN = 700;
+
+    /**
+     * @Message('字符串测试')
+     */
+    public static $ENUM_INVALID_STR = 'STR701';
 }
