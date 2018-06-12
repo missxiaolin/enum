@@ -9,7 +9,7 @@
 namespace xiaolin\Enum\Annotation;
 
 use Phalcon\Text;
-use ReflectionProperty;
+use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
 
 class PhalconAdapter implements AdapterInterface
 {
@@ -20,41 +20,26 @@ class PhalconAdapter implements AdapterInterface
         $this->class = $class;
     }
 
-    /**
-     * @param $name
-     * @param $properties
-     * @return array
-     * @throws \ReflectionException
-     */
     public function getAnnotationsByName($name, $properties)
     {
+        $adapter = new MemoryAdapter();
+        $reflection = $adapter->get($this->class);
+        $annotations = $reflection->getPropertiesAnnotations();
+
         $result = [];
         foreach ($properties as $key => $val) {
-            if (Text::startsWith($key, 'ENUM_')) {
+            $isValid = Text::startsWith($key, 'ENUM_') // 必须以ENUM_开头
+                && isset($annotations[$key]) // 当前字段存在注释
+                && $annotations[$key]->has(Text::camelize($name)); // 当前字段存在此注解的注释
+
+            if ($isValid) {
                 // 获取对应注释
-                $ret = new ReflectionProperty($this->class, $key);
-                $result[$val] = $this->getCommentByName($ret->getDocComment(), $name);
+                $ret = $annotations[$key]->get(Text::camelize($name));
+                $result[$val] = $ret->getArgument(0);
+
             }
         }
 
         return $result;
-    }
-
-    /**
-     * 根据name解析doc获取对应注释
-     * @param $doc
-     * @param $name
-     * @return null
-     */
-    protected function getCommentByName($doc, $name)
-    {
-        $name = Text::camelize($name);
-        $pattern = "/\@{$name}\(\'(.*)\'\)/U";
-        if (preg_match($pattern, $doc, $result)) {
-            if (isset($result[1])) {
-                return $result[1];
-            }
-        }
-        return null;
     }
 }

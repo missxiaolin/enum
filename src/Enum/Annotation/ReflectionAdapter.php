@@ -8,7 +8,6 @@
 
 namespace xiaolin\Enum\Annotation;
 
-use ReflectionClass;
 use ReflectionProperty;
 use xiaolin\Enum\Common\Str;
 
@@ -21,6 +20,12 @@ class ReflectionAdapter
         $this->class = $class;
     }
 
+    /**
+     * @param $name
+     * @param $properties
+     * @return array
+     * @throws \ReflectionException
+     */
     public function getAnnotationsByName($name, $properties)
     {
         $result = [];
