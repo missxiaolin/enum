@@ -6,7 +6,7 @@ namespace xiaolin\Enum;
 // +----------------------------------------------------------------------
 // | Copyright (c) 2016-2017 xiaolin All rights reserved.
 // +----------------------------------------------------------------------
-// | Author: limx <462441355@qq.com> <https://github.com/missxiaolin>
+// | Author: xl <462441355@qq.com> <https://github.com/missxiaolin>
 // +----------------------------------------------------------------------
 
 use ReflectionClass;
